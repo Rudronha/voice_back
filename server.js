@@ -3,14 +3,12 @@ const http = require('http');
 const { Server} = require('socket.io');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
+
 
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-
-app.use(express.static(path.join(__dirname, 'build')));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -38,10 +36,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
-});
-
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.get('/user',(req,res) =>{
