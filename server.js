@@ -3,14 +3,12 @@ const http = require('http');
 const { Server} = require('socket.io');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
-
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, '../client/build')));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -40,14 +38,10 @@ io.on('connection', (socket) => {
     });
 });
 
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
 app.get('/user',(req,res) =>{
     res.send("Hello There!");
 })
 
-server.listen(4000, () => {
-    console.log('Server is running on port 4000');
+server.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
